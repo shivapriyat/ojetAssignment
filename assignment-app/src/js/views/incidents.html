@@ -1,0 +1,147 @@
+<!--
+ Copyright (c) 2014, 2021, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+<div id="content" class="oj-hybrid-padding">
+  <h1>Setting up a Python development environment</h1>
+
+  <div class="oj-flex">
+    <div class="oj-flex-item" style="width: 50vw; margin-right: 3vw;">
+      <div data-bind="foreach: sections">
+      <h2 :id="[[$data.id]]" class="oj-typography-subheading-lg" data-bind="text: $data.sectionHeading"></h2>
+      <div class="oj-typography-body-sm" style="text-align: justify;margin-top: 3vh; margin-bottom: 3vh;"
+        data-bind="text: $data.sectionContent">
+      </div>
+      <!-- ko if: $data.codes -->
+      <div data-bind="foreach: $data.codes">
+      <code style="margin-bottom: 10px;" class="lighttheme">
+        <div style="float:right">
+                
+        <oj-button chroming="borderless" :id="[[$data.modeBtn]]" on-oj-action="[[updateTheme]]" 
+          display='icons'>Toggle Mode
+            <span slot='startIcon' class="oj-button-sm oj-ux-ico-theme"></span>
+        </oj-button>
+        <oj-button chroming="borderless" 
+        :id="[[$data.copyBtn]]"  on-oj-action="[[copyToClip]]" display='icons'>Copy to clipboard
+          <span slot='startIcon' class="oj-button-sm oj-ux-ico-clipboard"></span>
+      </oj-button>
+       </div>
+        <div>
+        <div style="padding-top: 30px;padding-bottom: 10px;" data-bind="html: $data.codeText"></div>
+        </div>
+
+      </code>
+      </div>
+      
+      <!-- /ko -->
+      </div>
+      
+        <div style="text-align: center">
+          <div>Was this helpful ?</div>
+          <oj-button chroming="borderless" :id="likeBtn" on-oj-action="[[openUseful]]" 
+          display='icons'>Useful
+            <span slot='startIcon' class="oj-button-sm oj-ux-ico-thumbs-up"></span>
+        </oj-button>
+        <oj-button chroming="borderless" 
+        :id="unlikeBtn"  on-oj-action="[[openUnuseful]]" display='icons'>Not Useful
+          <span slot='startIcon' class="oj-button-sm oj-ux-ico-thumbs-down"></span>
+      </oj-button>
+        </div>
+     
+        <oj-dialog id="usefulDialog" dialog-title="What is the reason for your feedback?">
+          <div slot="body">
+            
+            <oj-radioset id="radiosetBasicDemoId"
+              label-hint=""
+              label-edge="inside"
+              value="{{usefulReason}}">
+              
+              <oj-bind-for-each data="[[usefulReasons]]">
+                <template>
+                  <oj-option value="[[$current.data.value]]">
+                    <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                  </oj-option>
+                </template>
+              </oj-bind-for-each>
+            </oj-radioset>
+          </div>
+          <div slot="footer">
+            <oj-button id="submitButton" on-oj-action="[[submitUseful]]">Submit
+            </oj-button>
+            <oj-button id="cancelButton" on-oj-action="[[closeUseful]]">Cancel
+            </oj-button>
+          </div>
+        </oj-dialog>
+        <oj-dialog id="unusefulDialog" dialog-title="What is the reason for your feedback?">
+          <div slot="body">
+            <oj-radioset id="radiosetBasicDemoId"
+              label-hint=""
+              label-edge="inside"
+              value="{{unusefulReason}}">
+              
+              <oj-bind-for-each data="[[unusefulReasons]]">
+                <template>
+                  <oj-option value="[[$current.data.value]]">
+                    <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                  </oj-option>
+                </template>
+              </oj-bind-for-each>
+            </oj-radioset>
+          </div>
+          <div slot="footer">
+            <oj-button id="submitUnuseButton" on-oj-action="[[submitUnuseful]]">Submit
+            </oj-button>
+            <oj-button id="cancelUnuseButton" on-oj-action="[[closeUnuseful]]">Cancel
+            </oj-button>
+          </div>
+        </oj-dialog>
+
+        <oj-dialog id="feedbackDialog" style=" width: 40vw;height: 65vh;" dialog-title="Do you want to send feedback with screenshot?">
+          <div slot="body">
+            <oj-input-text placeholder="Describe your feedback in words" value="{{feedbackDesc}}"></oj-input-text>
+            <!-- <oj-button id="displayScreenshot" on-oj-action="[[displayScreenshot]]">Include Screenshot
+            </oj-button> -->
+            <oj-checkboxset value="{{isScreenshot}}" label-hint="">
+              <oj-option value="yes">Include Screenshot</oj-option>
+            </oj-checkboxset>
+            <!-- ko if: isScreenshot() == "yes" -->
+            <oj-button class="oj-button-sm" on-oj-action="[[selectScreenShotMode]]">Highlight Mode</oj-button>
+            <!-- /ko -->
+        <div id="result-image-div">
+          <img id="result-image" width="65%" height="60%"/>
+        </div>
+        </div>
+        <div slot="footer">
+          <oj-button id="submitFeedback" on-oj-action="[[submitFeedback]]">Submit Feedback
+          </oj-button>
+          <oj-button id="closeScreenshot" on-oj-action="[[closeFeedbackDialog]]">Close
+          </oj-button>
+        </div>
+      </oj-dialog>
+
+
+      </div>
+      
+
+      
+
+
+    <div class="fixed-content oj-flex-item">
+      <oj-button on-oj-action="[[takeScreenshot]]">Submit Feedback</oj-button>
+      
+
+      <oj-tab-bar id="tabbar1" selection="{{sectionSelectedItem}}" data="{{sectionDataProvider}}">
+        <template slot="itemTemplate" data-oj-as="item">
+          <li :id="[[item.data.id]]">
+            <a :href="[['#'+item.data.id]]">
+              <oj-bind-text value="[[item.data.sectionHeading]]"></oj-bind-text>
+            </a>
+          </li>
+        </template>
+      </oj-tab-bar>
+    </div>
+    
+  </div>
+
+</div>

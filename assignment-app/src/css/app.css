@@ -1,0 +1,53 @@
+/*
+    Document   : override
+    Created on : <date>
+    Author     : <author>
+    Description:
+        This is where any of your application specific styles should be included
+*/
+
+.sendOffScreen {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+#card {
+  width: 300px; 
+  transition: width 1s;
+  border: 1px solid black;
+}
+
+#card:hover {
+  width: 650px;
+}
+.fixed-content {
+  /*top: 0;
+  bottom:0;*/
+  right:0;
+  position:fixed;
+  overflow-y:scroll;
+  overflow-x:hidden;
+}
+div code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding-left:20px;
+}
+.lighttheme {
+  background-color: #eee;
+  color: black;
+}
+.darktheme {
+  background-color: black;
+  color: floralwhite;
+}
+.dodgerBlueForIcon {
+  color: dodgerblue;
+}
+.highlight {
+  border: 3px solid yellow;
+}
